@@ -8,9 +8,10 @@
 
 import UIKit
 
-class ViewController: UIViewController {
+class ViewController: UIViewController,UIPickerViewDataSource,UIPickerViewDelegate {
     @IBOutlet weak var myImageView: UIImageView!
 
+    @IBOutlet weak var myPickerView: UIPickerView!
     @IBOutlet weak var myLabel: UILabel!
     
     @IBAction func myButton(sender: UIButton) {
@@ -21,7 +22,6 @@ class ViewController: UIViewController {
             
             sender.setTitle("諦める", forState: UIControlState.Normal)
             self.myImageView.image = UIImage(named: "flower.png")
-            self.myLabel.text = "30:00"
             
             startTime = NSDate()
             
@@ -47,11 +47,16 @@ class ViewController: UIViewController {
     var startTime : NSDate!
     var time : NSDate!
     var now = String()
+    var list = ["1","5","10","20","30"]
     
     
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view, typically from a nib.
+        
+        self.myPickerView.delegate = self
+        self.myPickerView.dataSource = self
+        
         timer = NSTimer.scheduledTimerWithTimeInterval(1.0, target: self, selector: Selector("update"), userInfo: nil, repeats: true)
         timer.invalidate()
         let notificationCenter = NSNotificationCenter.defaultCenter()
@@ -120,6 +125,21 @@ class ViewController: UIViewController {
             self.myImageView.image = UIImage(named: "chou.jpg")
         }
 
+    }
+    
+    //Picker
+    func numberOfComponentsInPickerView(pickerview1: UIPickerView) -> Int {
+        return 1
+    }
+    func pickerView(pickerview1: UIPickerView, numberOfRowsInComponent component: Int) -> Int {
+        return list.count
+    }
+    
+    func pickerView(pickerView: UIPickerView, titleForRow row: Int, forComponent component: Int) -> String! {
+        return list[row]
+    }
+    func pickerView(pickerview1: UIPickerView, didSelectRow row: Int, inComponent component: Int){
+        self.myLabel.text = list[row]
     }
 
     override func didReceiveMemoryWarning() {
