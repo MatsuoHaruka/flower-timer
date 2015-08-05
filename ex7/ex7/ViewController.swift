@@ -20,7 +20,7 @@ class ViewController: UIViewController {
             timer = NSTimer.scheduledTimerWithTimeInterval(1.0, target: self, selector: Selector("update"), userInfo: nil, repeats: true)
             
             sender.setTitle("諦める", forState: UIControlState.Normal)
-            myImageView.image = UIImage(named: "flower.png")
+            self.myImageView.image = UIImage(named: "flower.png")
             self.myLabel.text = "30:00"
             
             startTime = NSDate()
@@ -33,7 +33,7 @@ class ViewController: UIViewController {
         }else{
             timer.invalidate()
             sender.setTitle("始める", forState: UIControlState.Normal)
-            myImageView.image = UIImage(named: "flower2.png")
+            self.myImageView.image = UIImage(named: "flower2.png")
             second = 0
         }
         
@@ -90,28 +90,19 @@ class ViewController: UIViewController {
             var intervalInt = Int(interval)
             
             second += intervalInt
-            var time = 1800 - second
-            var m = time / 60
-            var s = time - 60*m
-            var stringM : String = String(m)
-            var stringS : String = String(s)
-            if s >= 10{
-                now = stringM + ":" + stringS
-            }else{
-                now = stringM + ":0" + stringS
-            }
-            self.myLabel.text = now
-            
+            makeLabel()
             
         }
-        
-
     }
     
     
     
     func update(){
         second++
+        makeLabel()
+    }
+    
+    func makeLabel(){
         var time = 1800 - second
         var m = time / 60
         var s = time - 60*m
@@ -124,8 +115,11 @@ class ViewController: UIViewController {
             now = stringM + ":0" + stringS
         }
         self.myLabel.text = now
-
         
+        if time == 0 {
+            self.myImageView.image = UIImage(named: "chou.jpg")
+        }
+
     }
 
     override func didReceiveMemoryWarning() {
